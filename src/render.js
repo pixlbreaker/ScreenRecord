@@ -28,3 +28,26 @@ async function getVideoSources() {
 
     videoOptionsMenu.popup();
 }
+
+
+// Change the videoSource winodw to record
+async function selectSource(source){
+    videoSelectBtn.innerText = source.name;
+
+    const constraints = {
+        audio: false,
+        video: {
+            mandatory: {
+                chromeMediaSource: 'desktop',
+                chromeMediaSourceId: source.id
+            }
+        }
+    };
+
+    // Create a stream
+    const stream = await navigator.mediaDevices.getUserMedia(constraints);
+
+    // preview the source in a video element
+    videoElement.srcObject = stream;
+    videoElement.play();
+}
