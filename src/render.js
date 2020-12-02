@@ -10,6 +10,15 @@ videoSelectBtn.onclick = getVideoSources;
 const {desktopCapturer, remote} = require('electron');
 const { Menu } = remote;
 
+// Starts the Media Recording
+startBtn.onclick= function(e){
+    mediaRecorder.start();
+};
+
+stopBtn.onclick = function(){
+    mediaRecorder.stop();
+}
+
 
 // Get the available video sources
 async function getVideoSources() {
@@ -29,6 +38,8 @@ async function getVideoSources() {
     videoOptionsMenu.popup();
 }
 
+let mediaRecorder;
+const recordedChunks = [];
 
 // Change the videoSource winodw to record
 async function selectSource(source){
@@ -50,4 +61,39 @@ async function selectSource(source){
     // preview the source in a video element
     videoElement.srcObject = stream;
     videoElement.play();
+
+    // Create the Media Recorder
+    const options = { mimeType: 'video/webm; codecs=vp9' };
+    mediaRecorder = new MediaRecorder(stream, options);
+    //console.log('here');
+
+    // Register Event Handlers
+    mediaRecorder.ondataavailable = handleDataAvailable;
+    mediaRecorder.onstop = handleStop;
+
+}
+
+// Captures all recorded chunks
+function handleDataAvailable(e){
+    console.log('video data available');
+    recordedChunks.push(e.data);
+}
+
+const {dialog} = remote;
+const { writeFile}= require('fs');
+
+// Saves the video file on stop
+async function handleStop(e){
+    const blob = new Blob(recordedChunks, {
+        type: 'video/webm; codeccs=vp9'
+    });
+
+    const buffer = Buffer.from(await blob.arrayBuffer());
+
+    const {filePath} = await dialog.showSaveDialog({
+        buttonLabel: 'Save Video',
+        defaultPath: `vid-${Date.now()}.webm`
+    });
+
+    writeFile(filePath, buffer, () => console.log('video successfully saved'));
 }
