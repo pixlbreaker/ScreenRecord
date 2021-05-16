@@ -1,25 +1,31 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Screen Recorder</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
-    <link rel="stylesheet" href="index.css">
 
-    <script defer src="render.js"></script>
-  </head>
-  <body>
-    <h1>Screen Recorder</h1>
+	<head>
+		<meta charset="UTF-8">
+		<title>Screen Recorder</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css" />
+		<link rel="stylesheet" href="index.css">
 
-    <video></video>
+		<script defer src="render.js"></script>
+	</head>
 
-    <button id="startBtn" class="button is-primary">Start</button>
-    <button id="stopBtn" class="button is-warning">Stop</button>
-    
-    <hr/>
+	<body>
+		<h1>Screen Recorder</h1>
 
-    <button id="videoSelectBtn" class="button is-text">
-      Choose a Video Source
-    </button>
-  </body>
+		<video></video>
+
+		<button id="startBtn" class="button is-primary">Start</button>
+		<button id="stopBtn" class="button is-warning">Stop</button>
+
+		<hr />
+
+		<button id="videoSelectBtn" class="button is-text">
+			Choose a Video Source
+		</button>
+
+		<br>
+		<input type="checkbox" id="mp4" name="mp4" value="true">
+		<label for="mp4">Save as an mp4</label>
+	</body>
 </html>

@@ -4,6 +4,7 @@ const videoElement = document.querySelector('video');
 const startBtn = document.getElementById('startBtn');
 const stopBtn = document.getElementById('stopBtn');
 const videoSelectBtn = document.getElementById('videoSelectBtn');
+const mp4Selection = document.getElementById('mp4');
 videoSelectBtn.onclick = getVideoSources;
 
 
@@ -64,6 +65,10 @@ async function selectSource(source){
 
     // Create the Media Recorder
     const options = { mimeType: 'video/webm; codecs=vp9' };
+    if (mp4Selection.checked){
+        options = { mimeType: 'video/mp4' };
+        console.log('here');
+    }
     mediaRecorder = new MediaRecorder(stream, options);
     //console.log('here');
 
@@ -84,16 +89,31 @@ const { writeFile}= require('fs');
 
 // Saves the video file on stop
 async function handleStop(e){
-    const blob = new Blob(recordedChunks, {
-        type: 'video/webm; codeccs=vp9'
-    });
+    if(mp4Selection.checked){
+        const blob = new Blob(recordedChunks, {
+            type: 'video/mp4'
+        });
 
-    const buffer = Buffer.from(await blob.arrayBuffer());
+        const buffer = Buffer.from(await blob.arrayBuffer());
 
-    const {filePath} = await dialog.showSaveDialog({
-        buttonLabel: 'Save Video',
-        defaultPath: `vid-${Date.now()}.webm`
-    });
+        const {filePath} = await dialog.showSaveDialog({
+            buttonLabel: 'Save Video',
+            defaultPath: `vid-${Date.now()}.mp4`
+        });
+    
+        writeFile(filePath, buffer, () => console.log('video successfully saved'));
+    } else {
+        const blob = new Blob(recordedChunks, {
+            type: 'video/webm; codeccs=vp9'
+            });
 
-    writeFile(filePath, buffer, () => console.log('video successfully saved'));
+        const buffer = Buffer.from(await blob.arrayBuffer());
+
+        const {filePath} = await dialog.showSaveDialog({
+            buttonLabel: 'Save Video',
+            defaultPath: `vid-${Date.now()}.webm`
+        });
+    
+        writeFile(filePath, buffer, () => console.log('video successfully saved'));
+    }
 }
