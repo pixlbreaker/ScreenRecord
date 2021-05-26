@@ -3,4 +3,9 @@ body {
   margin: auto;
   max-width: 38rem;
   padding: 2rem;
+  text-align: center;
+}
+
+h1{
+  text-align: center;
 }
