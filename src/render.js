@@ -5,11 +5,17 @@ const startBtn = document.getElementById('startBtn');
 const stopBtn = document.getElementById('stopBtn');
 const videoSelectBtn = document.getElementById('videoSelectBtn');
 const mp4Selection = document.getElementById('mp4');
+const webmSelection = document.getElementById('webm');
 videoSelectBtn.onclick = getVideoSources;
 
 
 const {desktopCapturer, remote} = require('electron');
 const { Menu } = remote;
+
+// Changes the colors of the buttons
+startBtn.style.backgroundColor = 'Green';
+stopBtn.style.backgroundColor = 'Red';
+
 
 // Starts the Media Recording
 startBtn.onclick= function(e){
@@ -20,6 +26,18 @@ stopBtn.onclick = function(){
     mediaRecorder.stop();
 }
 
+// Checks if the video type selector is checked
+mp4Selection.onclick = function(){
+    if (webmSelection.checked) {
+        webmSelection.checked = false;
+    }
+}
+
+webmSelection.onclick = function(){
+    if(mp4Selection.checked){
+        mp4Selection.checked = false;
+    }
+}
 
 // Get the available video sources
 async function getVideoSources() {
