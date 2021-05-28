@@ -10,6 +10,7 @@ Grants the ability to save the file in 2 different file types:
 
 ## Screenshots
 ![Screenshot](src/Screenshot.png)
+
 An example of a the application
 
 ### Source
